@@ -19,13 +19,19 @@ dDesired = 0.7
 # Note that this machine must also compute E, the error, and output
 # the velocity, based on that.
 class Controller(sm.SM):
+    def __init__(self):
+        self.startState = 0
+    
     def getNextValues(self, state, inp):
+        delta = inp - dDesired
+        if delta < 0.05:
+            print 'we are there!!!'
+            return (delta, io.Action())
+        else:
+            return (delta, io.Action(fvel=delta * 0.5))
 
-################
-# Your code here
-################
-
-        pass
+    def done(self, state):
+        return delta < 0.05
 
 # Input is SensorInput instance; output is a delayed front sonar reading 
 class Sensor(sm.SM):
